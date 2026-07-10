@@ -1,0 +1,27 @@
+name: Alertes e-mail VigieFlotte
+# Envoi automatique hebdomadaire (lundi 07:00 UTC).
+on:
+  schedule:
+    - cron: "0 7 * * 1"
+  workflow_dispatch: {}   # permet un lancement manuel
+
+jobs:
+  envoyer:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install sqlalchemy psycopg2-binary pandas python-dateutil
+      - name: Envoyer les alertes
+        env:
+          NEON_URL: ${{ secrets.NEON_URL }}
+          SMTP_HOST: ${{ secrets.SMTP_HOST }}
+          SMTP_PORT: ${{ secrets.SMTP_PORT }}
+          SMTP_USER: ${{ secrets.SMTP_USER }}
+          SMTP_PASSWORD: ${{ secrets.SMTP_PASSWORD }}
+          EMAIL_FROM: ${{ secrets.EMAIL_FROM }}
+          EMAIL_TO: ${{ secrets.EMAIL_TO }}
+          SEUIL_JOURS: "60"
+        run: python alertes_mail.py

@@ -1,0 +1,15 @@
+# Secrets — NE JAMAIS publier
+.streamlit/secrets.toml
+
+# Base locale de repli
+fleet_local.db
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+
+# OS
+.DS_Store
+Thumbs.db
